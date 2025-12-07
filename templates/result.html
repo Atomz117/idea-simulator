@@ -80,7 +80,7 @@
                   <p class="text-primary text-base font-medium leading-normal flex items-center gap-1"><span
                       class="material-symbols-outlined text-lg">timeline</span>High Potential</p>
                 </div>
-                <div class="flex min-h-[180px] flex-1 flex-col justify-center items-center py-4">
+                <div id="evolution-chart" class="flex min-h-[180px] flex-1 flex-col justify-center items-center py-4">
                   <div class="relative w-full max-w-md">
                     <div class="h-1 bg-gray-200 dark:bg-gray-700/50 rounded-full"></div>
                     <div class="absolute top-1/2 -translate-y-1/2 w-full flex justify-between items-center px-2">
@@ -120,7 +120,7 @@
                   <p class="text-[#0bda5e] text-base font-medium leading-normal flex items-center gap-1"><span
                       class="material-symbols-outlined text-lg">target</span>Niche Identified</p>
                 </div>
-                <div class="flex min-h-[180px] items-center justify-center p-4">
+                <div id="market-angles-chart" class="flex min-h-[180px] items-center justify-center p-4">
                   <div class="relative w-64 h-48">
                     <div
                       class="absolute top-0 left-10 w-32 h-32 rounded-full bg-primary/20 dark:bg-primary/30 flex items-center justify-center text-center p-2">
@@ -152,7 +152,8 @@
                   <p class="text-[#0bda5e] text-base font-medium leading-normal flex items-center gap-1"><span
                       class="material-symbols-outlined text-lg">verified</span>Top Quartile</p>
                 </div>
-                <div class="grid min-h-[180px] gap-x-4 gap-y-6 grid-cols-[auto_1fr] items-center py-3">
+                <div id="competitors-chart"
+                  class="grid min-h-[180px] gap-x-4 gap-y-6 grid-cols-[auto_1fr] items-center py-3">
                   <p
                     class="text-gray-500 dark:text-[#9da6b9] text-[13px] font-bold leading-normal tracking-[0.015em] whitespace-nowrap">
                     Competitor A</p>
@@ -188,7 +189,7 @@
                 Summary</p>
               <p class="text-gray-500 dark:text-[#9da6b9] text-base font-normal leading-normal">Critical findings and
                 next steps</p>
-              <div class="flex-1 space-y-4 pt-4">
+              <div id="insights-list" class="flex-1 space-y-4 pt-4">
                 <div class="flex items-start gap-3">
                   <span class="material-symbols-outlined text-primary text-xl mt-1">check_circle</span>
                   <div>
@@ -283,32 +284,36 @@
 
       // Evolution Scale (Timeline)
       if (data.evolution) {
-        const evoContainer = document.querySelector('.relative.w-full.max-w-md'); // The scale container
+        const evoContainer = document.getElementById('evolution-chart'); // Specific ID
         if (evoContainer) {
-          // Past
-          evoContainer.querySelectorAll('p')[1].textContent = data.evolution.past;
-          // Present
-          evoContainer.querySelectorAll('p')[3].textContent = data.evolution.present;
-          // Future
-          evoContainer.querySelectorAll('p')[5].textContent = data.evolution.future;
+          const scaleContainer = evoContainer.querySelector('.relative.w-full.max-w-md');
+          if (scaleContainer) {
+            // Past
+            scaleContainer.querySelectorAll('p')[1].textContent = data.evolution.past;
+            // Present
+            scaleContainer.querySelectorAll('p')[3].textContent = data.evolution.present;
+            // Future
+            scaleContainer.querySelectorAll('p')[5].textContent = data.evolution.future;
+          }
         }
       }
 
       // Market Angles (Venn Diagram)
       if (data.market_angles) {
-        const vennSpans = document.querySelectorAll('.rounded-full span');
-        if (vennSpans.length >= 3) {
-          vennSpans[0].textContent = `Primary: ${data.market_angles.primary}`;
-          vennSpans[1].textContent = `Secondary: ${data.market_angles.secondary}`;
-          vennSpans[2].textContent = `Channel: ${data.market_angles.marketing}`;
+        const vennContainer = document.getElementById('market-angles-chart');
+        if (vennContainer) {
+          const vennSpans = vennContainer.querySelectorAll('.rounded-full span');
+          if (vennSpans.length >= 3) {
+            vennSpans[0].textContent = `Primary: ${data.market_angles.primary}`;
+            vennSpans[1].textContent = `Secondary: ${data.market_angles.secondary}`;
+            vennSpans[2].textContent = `Channel: ${data.market_angles.marketing}`;
+          }
         }
       }
 
       // Competitors
-      const compContainer = document.querySelector('.grid.min-h-\\[180px\\]');
+      const compContainer = document.getElementById('competitors-chart');
       if (data.competitors && compContainer) {
-        // Clear standard rows except header/logic structure if needed, or just replace content by index
-        // Better: Rebuild it like before
         compContainer.innerHTML = '';
         const compNames = [...data.competitors];
         const allEntities = [
@@ -336,8 +341,7 @@
       }
 
       // Insights (6 Points)
-      // The template has hardcoded insights directly in the HTML. We need to clear and rebuild.
-      const insightContainer = document.querySelector('.flex-1.space-y-4.pt-4');
+      const insightContainer = document.getElementById('insights-list');
       if (data.insights && insightContainer) {
         insightContainer.innerHTML = '';
         data.insights.forEach(insight => {

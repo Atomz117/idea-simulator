@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Simulator Lab</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #080808;
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #00FFF0, #FF2E9F, #3A0CA3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[#080808] overflow-x-hidden">
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#080808]">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 opacity-30 select-none">
+            <div class="absolute inset-0 bg-gradient-to-br from-[#3A0CA3] via-[#080808] to-[#080808]"></div>
+            <div
+                class="absolute top-20 left-20 w-96 h-96 bg-[#00FFF0] rounded-full blur-[120px] opacity-20 animate-pulse">
+            </div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-[#FF2E9F] rounded-full blur-[120px] opacity-20 animate-pulse"
+                style="animation-delay: 1s;"></div>
+        </div>
+
+        <!-- Unicorn Studio Embed -->
+        <div class="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none">
+            <div data-us-project="8qeX81n9mdTiVvngzM3y"
+                style="width: 100%; height: 100%; max-width: 1440px; max-height: 900px;"></div>
+        </div>
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-[#080808]/20 via-transparent to-[#080808]/60 pointer-events-none">
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
+
+            <!-- Badge -->
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#00FFF0]/10 to-[#FF2E9F]/10 border border-[#00FFF0]/20 mb-8 backdrop-blur-sm">
+                <i data-lucide="sparkles" class="w-4 h-4 text-[#00FFF0]"></i>
+                <span class="text-sm text-gray-300">AI-Powered Environment Simulation</span>
+            </div>
+
+            <!-- Heading -->
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                <span class="gradient-text">Test Your Startup Idea</span>
+                <br />
+                <span class="text-white">Instantly with AI</span>
+            </h1>
+
+            <p class="text-xl text-gray-400 mb-12 max-w-3xl mx-auto">
+                Paste your idea and get real-world feasibility insights, improvements, and industry-backed analysis
+                powered by authentic data sources.
+            </p>
+
+            <!-- Input Box -->
+            <div class="max-w-4xl mx-auto mb-8">
+                <div class="relative group">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-[#00FFF0] via-[#FF2E9F] to-[#3A0CA3] rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500">
+                    </div>
+
+                    <div
+                        class="relative bg-[#080808]/90 backdrop-blur-xl rounded-2xl border border-[#00FFF0]/20 p-6 shadow-2xl">
+                        <textarea id="ideaInput"
+                            placeholder="Paste your startup idea… e.g., 'A platform that helps students find last-minute tutors in their city.'"
+                            class="w-full bg-transparent text-white placeholder-gray-500 text-lg outline-none resize-none mb-4 border-none focus:ring-0"
+                            rows="4"></textarea>
+
+                        <button onclick="startSimulation()"
+                            class="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] text-[#080808] font-semibold rounded-xl hover:shadow-[0_0_30px_rgba(0,255,240,0.5)] transition-all duration-300 flex items-center justify-center gap-2 group mx-auto md:mx-0">
+                            <span>Analyze Idea</span>
+                            <i data-lucide="arrow-right"
+                                class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Mini -->
+            <div class="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-[#00FFF0] rounded-full animate-pulse"></div>
+                    <span>Authentic Data Sources</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-[#FF2E9F] rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+                    <span>Industry Insights</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-[#3A0CA3] rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+                    <span>Instant Analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#080808] to-transparent"></div>
+    </section>
+
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay"
+        class="fixed inset-0 z-50 hidden flex-col items-center justify-center bg-[#080808]/95 backdrop-blur-sm">
+        <div class="w-full max-w-md space-y-6 p-8 text-center">
+            <div class="relative mx-auto h-24 w-24">
+                <div class="absolute inset-0 animate-ping rounded-full bg-[#00FFF0]/20"></div>
+                <div class="absolute inset-2 animate-pulse rounded-full bg-[#00FFF0]/40"></div>
+                <div class="absolute inset-0 flex items-center justify-center text-[#00FFF0]">
+                    <i data-lucide="cpu" class="w-10 h-10"></i>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white">Analyzing Your Vision</h3>
+
+            <div class="w-full rounded-full bg-white/10 h-2">
+                <div id="progressBar"
+                    class="h-2 rounded-full bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] transition-all duration-300"
+                    style="width: 0%"></div>
+            </div>
+
+            <div class="h-8 overflow-hidden">
+                <p id="statusText" class="text-lg font-medium text-white/80 transition-all duration-300">Initializing...
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- FEATURES SECTION -->
+    <section class="relative py-24 bg-[#080808]">
+        <div class="absolute inset-0 opacity-40 pointer-events-none">
+            <div data-us-project="6qOWy4rsrY7EO480uXsR" style="width: 100%; height: 100%;"></div>
+        </div>
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-[#080808]/80 via-[#080808]/70 to-[#080808]/80 pointer-events-none">
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">What Our Platform Does</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Comprehensive AI simulation to validate and enhance your startup
+                    concept</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Feature 1 -->
+                <div class="group relative">
+                    <div
+                        class="absolute -inset-0.5 bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500">
+                    </div>
+                    <div
+                        class="relative h-full bg-gradient-to-br from-[#1a1a1a] to-[#080808] rounded-2xl border border-[#00FFF0]/10 p-8 hover:border-[#00FFF0]/30 transition-all duration-300">
+                        <div
+                            class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#00FFF0]/20 to-[#FF2E9F]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="target" class="w-7 h-7 text-[#00FFF0]"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Idea Practicality Analysis</h3>
+                        <p class="text-gray-400 leading-relaxed">Evaluate if your concept can work in real-world
+                            scenarios with actionable feasibility metrics.</p>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="group relative">
+                    <div
+                        class="absolute -inset-0.5 bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500">
+                    </div>
+                    <div
+                        class="relative h-full bg-gradient-to-br from-[#1a1a1a] to-[#080808] rounded-2xl border border-[#00FFF0]/10 p-8 hover:border-[#00FFF0]/30 transition-all duration-300">
+                        <div
+                            class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#00FFF0]/20 to-[#FF2E9F]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="trending-up" class="w-7 h-7 text-[#00FFF0]"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Industry Fit Check</h3>
+                        <p class="text-gray-400 leading-relaxed">Understand how your idea aligns with current market
+                            trends and industry dynamics.</p>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="group relative">
+                    <div
+                        class="absolute -inset-0.5 bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500">
+                    </div>
+                    <div
+                        class="relative h-full bg-gradient-to-br from-[#1a1a1a] to-[#080808] rounded-2xl border border-[#00FFF0]/10 p-8 hover:border-[#00FFF0]/30 transition-all duration-300">
+                        <div
+                            class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#00FFF0]/20 to-[#FF2E9F]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="database" class="w-7 h-7 text-[#00FFF0]"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Data-Driven Insights</h3>
+                        <p class="text-gray-400 leading-relaxed">Get authentic intelligence from published sources,
+                            databases, and industry reports.</p>
+                    </div>
+                </div>
+                <!-- Feature 4 -->
+                <div class="group relative">
+                    <div
+                        class="absolute -inset-0.5 bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500">
+                    </div>
+                    <div
+                        class="relative h-full bg-gradient-to-br from-[#1a1a1a] to-[#080808] rounded-2xl border border-[#00FFF0]/10 p-8 hover:border-[#00FFF0]/30 transition-all duration-300">
+                        <div
+                            class="w-14 h-14 rounded-xl bg-gradient-to-br from-[#00FFF0]/20 to-[#FF2E9F]/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="lightbulb" class="w-7 h-7 text-[#00FFF0]"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Improvement Suggestions</h3>
+                        <p class="text-gray-400 leading-relaxed">Receive optimization recommendations to strengthen your
+                            concept before launch.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESULT FORMATS PREVIEW -->
+    <section class="relative py-24 bg-gradient-to-b from-[#080808] to-[#0a0a0a]">
+        <div class="absolute inset-0 opacity-20 pointer-events-none">
+            <div class="absolute top-1/2 left-1/4 w-96 h-96 bg-[#3A0CA3] rounded-full blur-[150px]"></div>
+            <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-[#FF2E9F] rounded-full blur-[150px]"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    <span
+                        class="bg-gradient-to-r from-[#FF2E9F] via-[#00FFF0] to-[#3A0CA3] bg-clip-text text-transparent -webkit-background-clip: text;">Get
+                        Results in 4 Stunning Formats</span>
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Your analysis delivered in multiple visual formats
+                    for maximum clarity and impact</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Preview 1 -->
+                <div class="group relative">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] rounded-3xl opacity-20 group-hover:opacity-40 blur-xl transition duration-500">
+                    </div>
+                    <div
+                        class="relative bg-[#0f0f0f]/80 backdrop-blur-xl rounded-3xl border border-[#00FFF0]/20 p-8 hover:border-[#00FFF0]/40 transition-all duration-300">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FFF0]/20 to-[#FF2E9F]/20 flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-6 h-6 text-[#00FFF0]"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Short Summary</h3>
+                        </div>
+                        <!-- Content Placeholder -->
+                        <div
+                            class="bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] rounded-2xl p-6 border border-[#00FFF0]/10">
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-1.5 h-1.5 bg-[#00FFF0] rounded-full mt-2 animate-pulse"></div>
+                                    <p class="text-gray-300 leading-relaxed"><span
+                                            class="text-[#00FFF0] font-semibold">High market demand</span> identified
+                                        with moderate competition in target segment.</p>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="w-1.5 h-1.5 bg-[#FF2E9F] rounded-full mt-2 animate-pulse"
+                                        style="animation-delay: 0.5s;"></div>
+                                    <p class="text-gray-300 leading-relaxed">Recommended to <span
+                                            class="text-[#FF2E9F] font-semibold">narrow target audience</span> and
+                                        validate pricing through customer surveys.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview 2 -->
+                <div class="group relative">
+                    <div
+                        class="absolute -inset-1 bg-gradient-to-r from-[#FF2E9F] to-[#3A0CA3] rounded-3xl opacity-20 group-hover:opacity-40 blur-xl transition duration-500">
+                    </div>
+                    <div
+                        class="relative bg-[#0f0f0f]/80 backdrop-blur-xl rounded-3xl border border-[#FF2E9F]/20 p-8 hover:border-[#FF2E9F]/40 transition-all duration-300">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#FF2E9F]/20 to-[#3A0CA3]/20 flex items-center justify-center">
+                                <i data-lucide="bar-chart-3" class="w-6 h-6 text-[#FF2E9F]"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">Chart Diagram</h3>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] rounded-2xl p-6 border border-[#FF2E9F]/10">
+                            <div class="space-y-6">
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span class="text-gray-400">Market Viability</span>
+                                        <span class="text-[#00FFF0] font-semibold">85%</span>
+                                    </div>
+                                    <div class="h-3 bg-[#1a1a1a] rounded-full overflow-hidden">
+                                        <div
+                                            class="h-full w-[85%] bg-gradient-to-r from-[#00FFF0] to-[#FF2E9F] rounded-full shadow-[0_0_15px_rgba(0,255,240,0.5)]">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="relative py-24 bg-[#080808]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    <span class="gradient-text">How It Works</span>
+                </h2>
+                <p class="text-gray-400 text-lg">Three simple steps to validate your startup idea</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12 relative">
+                <!-- Connector Line -->
+                <div
+                    class="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#00FFF0]/20 to-transparent -translate-y-1/2">
+                </div>
+
+                <!-- Step 1 -->
+                <div class="relative">
+                    <div class="relative group">
+                        <div class="relative text-center">
+                            <div
+                                class="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-[#1a1a1a] to-[#080808] border border-[#00FFF0]/20 mb-6 group-hover:border-[#00FFF0]/40 transition-all duration-300 group-hover:scale-110">
+                                <i data-lucide="file-input" class="w-10 h-10 text-[#00FFF0] relative z-10"></i>
+                            </div>
+                            <div
+                                class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-gradient-to-br from-[#00FFF0] to-[#FF2E9F] flex items-center justify-center font-bold text-2xl text-[#080808] shadow-[0_0_30px_rgba(0,255,240,0.5)]">
+                                01</div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Paste Your Idea</h3>
+                            <p class="text-gray-400 leading-relaxed">Simply describe your startup concept in a few
+                                sentences</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative">
+                    <div class="relative group">
+                        <div class="relative text-center">
+                            <div
+                                class="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-[#1a1a1a] to-[#080808] border border-[#00FFF0]/20 mb-6 group-hover:border-[#00FFF0]/40 transition-all duration-300 group-hover:scale-110">
+                                <i data-lucide="cpu" class="w-10 h-10 text-[#00FFF0] relative z-10"></i>
+                            </div>
+                            <div
+                                class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-gradient-to-br from-[#00FFF0] to-[#FF2E9F] flex items-center justify-center font-bold text-2xl text-[#080808] shadow-[0_0_30px_rgba(0,255,240,0.5)]">
+                                02</div>
+                            <h3 class="text-2xl font-bold text-white mb-3">AI Simulates Environment</h3>
+                            <p class="text-gray-400 leading-relaxed">Our AI analyzes industry data, trends, and
+                                real-world scenarios</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative">
+                    <div class="relative group">
+                        <div class="relative text-center">
+                            <div
+                                class="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-[#1a1a1a] to-[#080808] border border-[#00FFF0]/20 mb-6 group-hover:border-[#00FFF0]/40 transition-all duration-300 group-hover:scale-110">
+                                <i data-lucide="layout" class="w-10 h-10 text-[#00FFF0] relative z-10"></i>
+                            </div>
+                            <div
+                                class="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-gradient-to-br from-[#00FFF0] to-[#FF2E9F] flex items-center justify-center font-bold text-2xl text-[#080808] shadow-[0_0_30px_rgba(0,255,240,0.5)]">
+                                03</div>
+                            <h3 class="text-2xl font-bold text-white mb-3">Get Visual Results</h3>
+                            <p class="text-gray-400 leading-relaxed">Receive insights in 4 beautiful, actionable formats
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 py-12 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-[#00FFF0]"></i>
+                <span class="font-bold text-xl tracking-tight text-white">Idea Simulator Lab</span>
+            </div>
+            <div class="text-gray-500 text-sm">
+                © 2024 Idea Simulator Lab. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Unicorn Studio Script -->
+    <script
+        src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.5.2/dist/unicornStudio.umd.js"></script>
+    <script>
+        // Init Unicorn Studio
+        window.onload = function () {
+            if (window.UnicornStudio) {
+                window.UnicornStudio.init();
+            }
+            lucide.createIcons();
+        };
+
+        async function startSimulation() {
+            const idea = document.getElementById('ideaInput').value;
+            if (!idea) return alert("Please enter an idea first.");
+
+            const overlay = document.getElementById('loadingOverlay');
+            const bar = document.getElementById('progressBar');
+            const status = document.getElementById('statusText');
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            const steps = [
+                "Extracting Seed Keywords...",
+                "Constructing Synthetic Personas...",
+                "Mapping Market Parameters...",
+                "Testing Fragility & Risks...",
+                "Generating Mutation Fixes...",
+                "Projecting Future Timelines...",
+                "Assembling Final Report..."
+            ];
+
+            // Visual progress
+            for (let i = 0; i < steps.length; i++) {
+                status.textContent = steps[i];
+                bar.style.width = ((i + 1) / steps.length * 100) + "%";
+                await new Promise(r => setTimeout(r, 800));
+            }
+
+            try {
+                const response = await fetch('/api/simulate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idea: idea })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('simulationResult', JSON.stringify(data));
+                    window.location.href = '/result';
+                } else {
+                    alert("Simulation failed. Please try again.");
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error connecting to server.");
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+            }
+        }
+    </script>
+</body>
+
+</html>

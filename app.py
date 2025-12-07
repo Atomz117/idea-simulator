@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 
 @app.route('/')
 def home():
-    return render_template('front.html')
+    return render_template('new_front.html')
 
 @app.route('/result')
 def result():
