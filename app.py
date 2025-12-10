@@ -6,23 +6,23 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 
 @app.route('/')
 def home():
-    return render_template('front.html')
+    return render_template('new_front.html')
 
 @app.route('/result', methods=['POST', 'GET'])
 def result():
     if request.method == 'POST':
         idea = request.form.get('idea', '')
         if not idea:
-             return render_template('front.html') # Redirect back if empty
+             return render_template('new_front.html') # Redirect back if empty
              
         # Run the deterministic simulation
         simulation_data = analyze_idea(idea)
         
         # Render the dynamic template with the data
-        return render_template('result_dynamic.html', **simulation_data)
+        return render_template('result_v2.html', **simulation_data)
         
-    # If accessed via GET (e.g. reload), send back to home or show sample
-    return render_template('front.html') # Or redirect('/')
+    # If accessed via GET (e.g. reload), send back to home
+    return render_template('new_front.html')
 
 @app.route('/download_report', methods=['POST'])
 def download_report():

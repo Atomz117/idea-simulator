@@ -456,31 +456,22 @@
             for (let i = 0; i < steps.length; i++) {
                 status.textContent = steps[i];
                 bar.style.width = ((i + 1) / steps.length * 100) + "%";
-                await new Promise(r => setTimeout(r, 800));
+                await new Promise(r => setTimeout(r, 600));
             }
 
-            try {
-                const response = await fetch('/api/simulate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idea: idea })
-                });
+            // Submit form to /result
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/result';
 
-                if (response.ok) {
-                    const data = await response.json();
-                    localStorage.setItem('simulationResult', JSON.stringify(data));
-                    window.location.href = '/result';
-                } else {
-                    alert("Simulation failed. Please try again.");
-                    overlay.classList.add('hidden');
-                    overlay.classList.remove('flex');
-                }
-            } catch (e) {
-                console.error(e);
-                alert("Error connecting to server.");
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
-            }
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'idea';
+            input.value = idea;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
         }
     </script>
 </body>

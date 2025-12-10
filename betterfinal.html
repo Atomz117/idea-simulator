@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Simulation Output Page</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2b6cee",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+            boxShadow: {
+              'glow-green': '0 0 20px 5px rgba(16, 185, 129, 0.5)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-b-[#282e39] px-4 sm:px-6 lg:px-10 py-3">
+<div class="flex items-center gap-4 text-gray-900 dark:text-white">
+<div class="size-6">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M39.5563 34.1455V13.8546C39.5563 15.708 36.8773 17.3437 32.7927 18.3189C30.2914 18.916 27.263 19.2655 24 19.2655C20.737 19.2655 17.7086 18.916 15.2073 18.3189C11.1227 17.3437 8.44365 15.708 8.44365 13.8546V34.1455C8.44365 35.9988 11.1227 37.6346 15.2073 38.6098C17.7086 39.2069 20.737 39.5564 24 39.5564C27.263 39.5564 30.2914 39.2069 32.7927 38.6098C36.8773 37.6346 39.5563 35.9988 39.5563 34.1455Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M10.4485 13.8519C10.4749 13.9271 10.6203 14.246 11.379 14.7361C12.298 15.3298 13.7492 15.9145 15.6717 16.3735C18.0007 16.9296 20.8712 17.2655 24 17.2655C27.1288 17.2655 29.9993 16.9296 32.3283 16.3735C34.2508 15.9145 35.702 15.3298 36.621 14.7361C37.3796 14.246 37.5251 13.9271 37.5515 13.8519C37.5287 13.7876 37.4333 13.5973 37.0635 13.2931C36.5266 12.8516 35.6288 12.3647 34.343 11.9175C31.79 11.0295 28.1333 10.4437 24 10.4437C19.8667 10.4437 16.2099 11.0295 13.657 11.9175C12.3712 12.3647 11.4734 12.8516 10.9365 13.2931C10.5667 13.5973 10.4713 13.7876 10.4485 13.8519ZM37.5563 18.7877C36.3176 19.3925 34.8502 19.8839 33.2571 20.2642C30.5836 20.9025 27.3973 21.2655 24 21.2655C20.6027 21.2655 17.4164 20.9025 14.7429 20.2642C13.1498 19.8839 11.6824 19.3925 10.4436 18.7877V34.1275C10.4515 34.1545 10.5427 34.4867 11.379 35.027C12.298 35.6207 13.7492 36.2054 15.6717 36.6644C18.0007 37.2205 20.8712 37.5564 24 37.5564C27.1288 37.5564 29.9993 37.2205 32.3283 36.6644C34.2508 36.2054 35.702 35.6207 36.621 35.027C37.4573 34.4867 37.5485 34.1546 37.5563 34.1275V18.7877ZM41.5563 13.8546V34.1455C41.5563 36.1078 40.158 37.5042 38.7915 38.3869C37.3498 39.3182 35.4192 40.0389 33.2571 40.5551C30.5836 41.1934 27.3973 41.5564 24 41.5564C20.6027 41.5564 17.4164 41.1934 14.7429 40.5551C12.5808 40.0389 10.6502 39.3182 9.20848 38.3869C7.84205 37.5042 6.44365 36.1078 6.44365 34.1455L6.44365 13.8546C6.44365 12.2684 7.37223 11.0454 8.39581 10.2036C9.43325 9.3505 10.8137 8.67141 12.343 8.13948C15.4203 7.06909 19.5418 6.44366 24 6.44366C28.4582 6.44366 32.5797 7.06909 35.657 8.13948C37.1863 8.67141 38.5667 9.3505 39.6042 10.2036C40.6278 11.0454 41.5563 12.2684 41.5563 13.8546Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Idea Simulator Lab</h2>
+</div>
+</header>
+<main class="flex-1 px-4 sm:px-6 lg:px-10 py-8 lg:py-12">
+<div class="mx-auto max-w-7xl">
+<div class="flex flex-col items-center gap-12">
+<div class="flex flex-col items-center gap-4 text-center w-full">
+<div class="flex flex-col items-center gap-2">
+<div class="flex items-center gap-3 px-4 py-2 rounded-full bg-yellow-400/10 border border-yellow-400/50 text-yellow-300">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1, 'wght' 600;">military_tech</span>
+<span class="font-bold text-lg">INVESTABLE</span>
+</div>
+<h1 class="text-4xl lg:text-5xl font-black tracking-tighter text-gray-100">Core Viability Assessment</h1>
+</div>
+<p class="max-w-2xl text-lg text-gray-400">The simulation indicates a strong product-market fit. Key metrics suggest a high probability of success, contingent on addressing the primary adoption blocker.</p>
+<div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-lg font-semibold mt-2">
+<div class="flex items-center gap-2"><span class="text-gray-400">Trust Score:</span><span class="text-green-400">9/10</span></div>
+<div class="flex items-center gap-2"><span class="text-gray-400">Competition:</span><span class="text-green-400">LOW</span></div>
+<div class="flex items-center gap-2"><span class="text-gray-400">Pain Point Severity:</span><span class="text-red-400">HIGH</span></div>
+</div>
+</div>
+<div class="w-full max-w-4xl p-6 rounded-xl border-2 border-red-500/50 bg-red-900/20">
+<div class="flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="text-center md:text-left">
+<p class="text-sm font-bold uppercase tracking-widest text-red-400">#1 Blocker Identified</p>
+<p class="text-2xl font-bold text-white mt-1">32% ABANDON AT CHECKOUT</p>
+<p class="text-base text-gray-400">Price Sensitivity: 4/10</p>
+</div>
+<div class="text-5xl font-thin text-red-400 hidden md:block">→</div>
+<div class="text-5xl font-thin text-red-400 rotate-90 md:hidden">→</div>
+<div class="text-center md:text-left p-4 rounded-lg bg-green-900/30 border border-green-500/50">
+<p class="text-sm font-bold uppercase tracking-widest text-green-400">Recommended Solution</p>
+<p class="text-2xl font-bold text-white mt-1">TIERED FREEMIUM MODEL</p>
+<p class="text-base text-green-300">+47% adoption, 1 day to implement</p>
+</div>
+</div>
+</div>
+<div class="w-full max-w-5xl py-12">
+<div class="flex flex-col items-center text-center mb-8">
+<h2 class="text-3xl font-bold tracking-tight text-white">Growth Projections</h2>
+<p class="mt-2 max-w-2xl text-gray-400">Timeline shows projected user and revenue growth, factoring in the implementation of the recommended solution.</p>
+</div>
+<div class="relative flex items-end justify-between w-full h-32 px-4">
+<div class="absolute top-1/2 left-0 w-full h-1 bg-gray-700 -translate-y-1/2"></div>
+<div class="relative flex flex-col items-center">
+<div class="relative flex items-center justify-center size-24 bg-background-dark border-2 border-primary rounded-full">
+<div class="text-center">
+<p class="text-sm font-bold text-primary uppercase">Week 1</p>
+<p class="text-2xl font-bold text-white">1,200</p>
+<p class="text-xs text-gray-400">Users</p>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col items-center">
+<div class="relative flex items-center justify-center size-32 bg-background-dark border-2 border-primary rounded-full">
+<div class="text-center">
+<p class="text-sm font-bold text-primary uppercase">Month 1</p>
+<p class="text-3xl font-bold text-white">$4.5k</p>
+<p class="text-xs text-gray-400">Revenue</p>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col items-center">
+<div class="relative flex items-center justify-center size-40 bg-background-dark border-2 border-green-500 rounded-full shadow-glow-green">
+<div class="text-center">
+<p class="text-base font-bold text-green-400 uppercase">Month 3</p>
+<p class="text-4xl font-black text-white">$25k</p>
+<p class="text-sm text-gray-300">Revenue (post-fix)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full max-w-6xl py-12">
+<div class="flex flex-col items-center text-center mb-10">
+<h2 class="text-3xl font-bold tracking-tight text-white">Environmental Impact Analysis</h2>
+<p class="mt-2 max-w-3xl text-gray-400">Simulated impact of your idea on the surrounding business environment, identifying key external factors and trends that could influence your trajectory.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="flex flex-col p-6 rounded-xl border border-gray-700 bg-gray-800/20 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="text-lg font-bold text-white">Market Adoption Potential</h3>
+<p class="text-sm text-gray-400">Target Audience Reach</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-blue-400">groups</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-full bg-gray-700 rounded-full h-2.5">
+<div class="bg-blue-500 h-2.5 rounded-full" style="width: 75%"></div>
+</div>
+<span class="text-xl font-bold text-white">75%</span>
+</div>
+</div>
+<div class="flex flex-col p-6 rounded-xl border border-gray-700 bg-gray-800/20 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="text-lg font-bold text-white">Regulatory Landscape Shift</h3>
+<p class="text-sm text-gray-400">Risk Level &amp; Policies</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-yellow-400">gavel</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-full bg-gray-700 rounded-full h-2.5">
+<div class="bg-yellow-500 h-2.5 rounded-full" style="width: 20%"></div>
+</div>
+<span class="text-xl font-bold text-white">LOW</span>
+</div>
+</div>
+<div class="flex flex-col p-6 rounded-xl border border-gray-700 bg-gray-800/20 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="text-lg font-bold text-white">Societal Trend Alignment</h3>
+<p class="text-sm text-gray-400">Relevance to Culture</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-purple-400">trending_up</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-full bg-gray-700 rounded-full h-2.5">
+<div class="bg-purple-500 h-2.5 rounded-full" style="width: 90%"></div>
+</div>
+<span class="text-xl font-bold text-white">9/10</span>
+</div>
+</div>
+<div class="flex flex-col p-6 rounded-xl border border-gray-700 bg-gray-800/20 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="text-lg font-bold text-white">Technological Disruption</h3>
+<p class="text-sm text-gray-400">Impact Score</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-teal-400">model_training</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-full bg-gray-700 rounded-full h-2.5">
+<div class="bg-teal-500 h-2.5 rounded-full" style="width: 65%"></div>
+</div>
+<span class="text-xl font-bold text-white">6.5/10</span>
+</div>
+</div>
+<div class="flex flex-col p-6 rounded-xl border border-gray-700 bg-gray-800/20 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="text-lg font-bold text-white">Supply Chain Vulnerability</h3>
+<p class="text-sm text-gray-400">Risk Factors</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-red-400">warning</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-full bg-gray-700 rounded-full h-2.5">
+<div class="bg-red-500 h-2.5 rounded-full" style="width: 40%"></div>
+</div>
+<span class="text-xl font-bold text-white">MED</span>
+</div>
+</div>
+<div class="flex flex-col p-6 rounded-xl border border-gray-700 bg-gray-800/20 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="text-lg font-bold text-white">Capital Availability</h3>
+<p class="text-sm text-gray-400">Investor Interest</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-green-400">paid</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-full bg-gray-700 rounded-full h-2.5">
+<div class="bg-green-500 h-2.5 rounded-full" style="width: 85%"></div>
+</div>
+<span class="text-xl font-bold text-white">HIGH</span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 max-w-4xl">
+<div class="flex flex-col p-6 rounded-xl border-2 border-red-500 bg-red-900/20 text-center">
+<span class="material-symbols-outlined text-4xl text-red-300 mb-3">priority_high</span>
+<h3 class="text-xl font-bold text-red-300 uppercase tracking-wider">Urgent Action</h3>
+<p class="text-2xl font-bold text-white mt-1">Implement Freemium Tier</p>
+<div class="mt-4 text-sm space-y-1">
+<p><span class="font-semibold text-gray-400">Time Estimate:</span> <span class="text-gray-200">~1 Day</span></p>
+<p><span class="font-semibold text-gray-400">Projected Impact:</span> <span class="font-bold text-green-400">HIGH</span></p>
+</div>
+</div>
+<div class="flex flex-col p-6 rounded-xl border-2 border-blue-500 bg-blue-900/20 text-center">
+<span class="material-symbols-outlined text-4xl text-blue-300 mb-3">build</span>
+<h3 class="text-xl font-bold text-blue-300 uppercase tracking-wider">Next Step</h3>
+<p class="text-2xl font-bold text-white mt-1">Develop 1-Click Onboarding</p>
+<div class="mt-4 text-sm space-y-1">
+<p><span class="font-semibold text-gray-400">Time Estimate:</span> <span class="text-gray-200">2 Weeks</span></p>
+<p><span class="font-semibold text-gray-400">Projected Impact:</span> <span class="font-bold text-yellow-400">MEDIUM</span></p>
+</div>
+</div>
+</div>
+<div class="mt-16 text-center">
+<button class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-8 py-3 text-lg font-bold text-white transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-dark">
+<span class="material-symbols-outlined">download</span>
+<span>Download Full Report</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

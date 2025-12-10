@@ -12,12 +12,13 @@ def parse_input_and_extract_dna(idea_text):
     
     # 1. Domain Classification
     domain_keywords = {
-        "Health": ["health", "sleep", "diet", "fitness", "doctor", "medical", "patient", "workout", "monitor"],
-        "Productivity": ["work", "manage", "track", "task", "time", "focus", "schedule", "calendar"],
-        "FinTech": ["money", "save", "invest", "stock", "crypto", "bank", "pay", "wallet", "budget"],
-        "EdTech": ["learn", "study", "course", "tutor", "school", "class", "exam", "grade"],
-        "E-Commerce": ["buy", "sell", "shop", "store", "marketplace", "delivery", "fashion"],
-        "Social": ["connect", "meet", "chat", "friends", "community", "network", "share"]
+        "Health": ["health", "sleep", "diet", "fitness", "doctor", "medical", "patient", "workout", "monitor", "gym", "mental"],
+        "Productivity": ["work", "manage", "track", "task", "time", "focus", "schedule", "calendar", "note", "job"],
+        "FinTech": ["money", "save", "invest", "stock", "crypto", "bank", "pay", "wallet", "budget", "finance"],
+        "EdTech": ["learn", "study", "course", "tutor", "school", "class", "exam", "grade", "skill"],
+        "E-Commerce": ["buy", "sell", "shop", "store", "marketplace", "delivery", "fashion", "brand"],
+        "Social": ["connect", "meet", "chat", "friends", "community", "network", "share", "social"],
+        "GreenTech": ["recycl", "green", "carbon", "sustainab", "solar", "energy", "waste"]
     }
     
     detected_domain = "General Consumer"
@@ -39,6 +40,7 @@ def parse_input_and_extract_dna(idea_text):
         "doctor": {"archetype": "professional", "time_scarcity": "extreme", "income_tier": "high"},
         "freelancer": {"archetype": "freelancer", "time_scarcity": "variable", "income_tier": "variable"},
         "gamer": {"archetype": "gamer", "time_scarcity": "low", "income_tier": "low-mid"},
+        "elderly": {"archetype": "elderly", "time_scarcity": "low", "income_tier": "mid"},
     }
     
     extracted_user = {"archetype": "general_user", "time_scarcity": "mid", "income_tier": "mid"}
@@ -65,7 +67,7 @@ def parse_input_and_extract_dna(idea_text):
     if "privacy" in text_lower or "secure" in text_lower:
         constraints.append("high_privacy")
 
-    # 5. Complexity Score (Simple heuristic based on word count & tech terms)
+    # 5. Complexity Score
     tech_terms = ["ai", "blockchain", "vr", "ar", "machine learning", "crypto", "biometric"]
     tech_density = sum(1 for t in tech_terms if t in text_lower)
     complexity = min(10, 3 + tech_density * 2)
@@ -89,15 +91,16 @@ def construct_synthetic_model(seed):
     domain = seed["domain"]
     user = seed["target_user"]
     
-    # Value Proposition Template
+    # Value Proposition
     verb_map = {"monitoring": "Gain visibility into metrics", "network": "Connect with peers", "transaction": "Seamlessly exchange value", "utility": "Optimize daily tasks"}
     val_prop_start = verb_map.get(seed["action_type"], "Improve life quality")
     value_prop = f"{val_prop_start} to reduce {user['time_scarcity']} time scarcity."
 
-    # Persona Generation - Deterministic attributes based on archetype
+    # Persona Generation
     pain_map = {
         "parent": "lack of control", "student": "overwhelm", 
-        "professional": "inefficiency", "general_user": "inconvenience"
+        "professional": "inefficiency", "general_user": "inconvenience",
+        "elderly": "complexity"
     }
     
     primary_persona = {
@@ -109,23 +112,6 @@ def construct_synthetic_model(seed):
         "patience_threshold": 40 if user["time_scarcity"] == "high" else 70 
     }
     
-    # Early Adopter (Modified Primary)
-    early_adopter = primary_persona.copy()
-    early_adopter["role"] = "Early Adopter"
-    early_adopter["tech_comfort"] = min(100, primary_persona["tech_comfort"] + 40)
-    early_adopter["price_sensitivity"] = max(0, primary_persona["price_sensitivity"] - 30)
-    early_adopter["social_influence"] = "high"
-    
-    # Economic Buyer (Conditional)
-    economic_buyer = None
-    if seed["domain"] in ["FinTech", "Productivity"] or "professional" in user["archetype"]:
-        economic_buyer = {
-            "role": "Economic Buyer",
-            "primary_pain": "ROI uncertainty",
-            "decision_driver": "roi_calculation",
-            "integration_overhead": "concern"
-        }
-
     # User Journey Map
     journey_friction = {
         "awareness": 10,
@@ -136,7 +122,7 @@ def construct_synthetic_model(seed):
     
     return {
         "value_prop": value_prop,
-        "personas": [primary_persona, early_adopter, economic_buyer],
+        "personas": [primary_persona],
         "journey_map": journey_friction
     }
 
@@ -144,12 +130,12 @@ def construct_synthetic_model(seed):
 
 def calculate_physics(seed, model):
     """
-    Calculates T_score, P_sens, M_size, etc. using calibrated formulas.
+    Calculates detailed parameters including the 6 environment factors.
     """
     domain = seed["domain"]
     
     # 1. Trust Score (T_score)
-    base_trust_map = {"Health": 40, "FinTech": 50, "Productivity": 70, "EdTech": 65, "Social": 45, "E-Commerce": 60, "General Consumer": 60}
+    base_trust_map = {"Health": 40, "FinTech": 50, "Productivity": 70, "EdTech": 65, "Social": 45, "E-Commerce": 60, "General Consumer": 60, "GreenTech": 75}
     base_trust = base_trust_map.get(domain, 60)
     
     data_sensitivity_penalty = 0
@@ -158,295 +144,195 @@ def calculate_physics(seed, model):
         
     t_score = int(base_trust * (1 - data_sensitivity_penalty))
     
-    # 2. Price Sensitivity (P_sens)
-    # P_sens = (User_Income_Index / Value_Perception) * Category_Luxury_Factor
-    # Simplified for simulation:
-    income_index = 1.0 # Default
-    if seed["target_user"]["income_tier"] == "high": income_index = 2.0
-    elif seed["target_user"]["income_tier"] == "low": income_index = 0.6
+    # 2. Price Sensitivity
+    p_sens_score = 5
+    if seed["target_user"]["income_tier"] == "low": p_sens_score += 3
+    if seed["target_user"]["income_tier"] == "high": p_sens_score -= 2
     
-    # Value Perception Est: Time_Saved * Hourly_Value + Anxiety_Reduced * 20
-    time_saved_hours = 2 # Abstract unit
-    hourly_value = 50 if income_index > 1.5 else 20
-    anxiety_reduced = 1 if model["personas"][0]["primary_pain"] in ["lack of control", "overwhelm"] else 0.5
-    value_perception = (time_saved_hours * hourly_value) + (anxiety_reduced * 20)
+    # 3. Market Size
+    m_size_users = 1000000 # Base
+    if domain in ["Health", "FinTech"]: m_size_users *= 2
     
-    p_sens_score = max(1, min(10, int((150 / value_perception) * 5 * (1 if domain != "FinTech" else 0.8))))
-    if seed["target_user"]["income_tier"] == "high":
-        p_sens_score = max(1, p_sens_score - 2)
-
-    # 3. Market Size (M_size)
-    # Bottom-up: Relevant_Pop * Adoption_Rate
-    relevant_pop_map = {"parent": 25000000, "student": 18000000, "professional": 60000000, "gamer": 100000000, "general_user": 150000000}
-    rel_pop = relevant_pop_map.get(seed["target_user"]["archetype"], 50000000)
-    adoption_rate = 0.03 # 3%
-    m_size_users = int(rel_pop * adoption_rate)
+    # 4. Competitive Intensity
+    c_int = 4
+    if "ai" in seed["original_text"].lower(): c_int = 8
     
-    # 4. Competitive Intensity (C_int)
-    # Proxy: "AI" usually implies high competition now.
-    c_int = 3
-    if "ai" in seed["original_text"].lower():
-        c_int = 8
-    elif domain in ["FinTech", "Social"]:
-        c_int = 7
+    # --- 6 Environment Factors (0-100) ---
+    
+    # Market Adoption
+    market_adopt = 70
+    if seed["tech_dependency_level"] == "high": market_adopt -= 20
+    if domain in ["Social", "E-Commerce"]: market_adopt += 15
+    
+    # Regulatory Risk
+    reg_risk = 20
+    if domain == "Health": reg_risk = 85
+    elif domain == "FinTech": reg_risk = 90
+    elif "ai" in seed["original_text"].lower(): reg_risk = 60
+    
+    # Societal Trend
+    soc_trend = 50
+    if domain in ["GreenTech", "Health", "Productivity"]: soc_trend = 90
+    
+    # Tech Disruption
+    tech_disrupt = 65
+    if "ai" in seed["original_text"].lower(): tech_disrupt = 95
+    
+    # Supply Chain
+    supply_risk = 30
+    if domain == "E-Commerce" or seed["action_type"] == "transaction": supply_risk = 70
+    
+    # Capital Availability
+    capital = 50
+    if domain in ["FinTech", "Health"]: capital = 85
         
     return {
         "t_score": t_score,
         "p_sens": p_sens_score,
         "m_size_users": m_size_users,
         "c_int": c_int,
-        "market_adoption_potential": min(100, int((m_size_users / 1000000) * 10)), # heuristic for chart
-        "regulatory_risk": "HIGH" if domain in ["Health", "FinTech"] else "LOW",
-        "societal_trend": 9 if "ai" in seed["original_text"].lower() else 5,
-        "capital_availability": "HIGH" if domain in ["FinTech", "Health", "Productivity"] else "MED"
+        "factors": {
+            "market_adoption": min(100, market_adopt),
+            "regulatory_risk": min(100, reg_risk),
+            "societal_trend": min(100, soc_trend),
+            "tech_disruption": min(100, tech_disrupt),
+            "supply_chain_risk": min(100, supply_risk),
+            "capital_availability": min(100, capital)
+        }
     }
 
 # --- STAGE 4: COLLISION DETECTION ---
 
 def detect_collisions(p_set, model, seed):
-    """
-    Tests the P-Set against thresholds to find failure points.
-    """
     collisions = []
     
-    # 1. Trust Fragility Test
+    # Trust
     if p_set["t_score"] < 50:
         collisions.append({
-            "type": "trust_abandonment",
-            "stage": "onboarding",
-            "severity": 50 - p_set["t_score"],
-            "description": "User declines essential permissions due to low trust."
+            "type": "trust",
+            "title": "TRUST GAP DETECTED",
+            "desc": "Users decline essential permissions.",
+            "severity": 8,
+            "solution": {"name": "Transparent Data Dashboard", "impact": "High", "time": "1 week"}
         })
         
-    # 2. Adoption Friction Test
-    total_friction = sum(model["journey_map"].values())
-    patience = model["personas"][0]["patience_threshold"]
-    if total_friction > patience:
+    # Friction
+    if seed["complexity_score"] > 6:
         collisions.append({
-            "type": "friction_dropoff",
-            "stage": "activation", 
-            "severity": total_friction - patience,
-            "description": f"Complexity ({total_friction}) exceeds user patience ({patience})."
+            "type": "friction",
+            "title": "ADOPTION FRICTION HIGH",
+            "desc": "Onboarding is too complex for this user.",
+            "severity": 9,
+            "solution": {"name": "1-Click Onboarding", "impact": "High", "time": "2 weeks"}
         })
         
-    # 3. Price Collision
-    # If p_sens is high (>6), suggest price friction
-    if p_set["p_sens"] > 6:
+    # Default if no major collision
+    if not collisions:
         collisions.append({
-            "type": "value_gap",
-            "stage": "checkout",
-            "severity": (p_set["p_sens"] - 6) * 10,
-            "description": "Perceived value does not justify the cost for this segment."
+            "type": "growth",
+            "title": "SLOW ORGANIC GROWTH",
+            "desc": "Viral coefficient is below 1.0.",
+            "severity": 4,
+            "solution": {"name": "Gamified Referral Loop", "impact": "Medium", "time": "3 days"}
         })
         
-    # 4. Market Readiness (Timing)
-    if seed["tech_dependency_level"] == "high" and p_set["t_score"] < 60:
-         collisions.append({
-            "type": "market_unready",
-            "stage": "awareness",
-            "severity": 40,
-            "description": "Market skepticism high for new tech in this domain."
-        })
-
     return collisions
 
-# --- STAGE 5: MUTATION ENGINE ---
+# --- STAGE 5: MUTATION ENGINE (V2) ---
+# Integrated into Collision Detection for simpler linking
 
-def generate_mutations(collisions):
-    """
-    Maps collisions to specific solutions.
-    """
-    mutation_library = {
-        "trust_abandonment": [
-            {"name": "Add Trust Badges", "impact": 10, "cost": 2, "time": "2 days"},
-            {"name": "Transparent Data Dashboard", "impact": 25, "cost": 5, "time": "1 week"},
-            {"name": "Guest Mode (No Sign-up)", "impact": 40, "cost": 4, "time": "4 days"}
-        ],
-        "friction_dropoff": [
-            {"name": "1-Click Onboarding", "impact": 30, "cost": 6, "time": "2 weeks"},
-            {"name": "Interactive Tutorial", "impact": 15, "cost": 3, "time": "1 week"}
-        ],
-        "value_gap": [
-            {"name": "Tiered Freemium Model", "impact": 47, "cost": 2, "time": "1 day"},
-            {"name": "Pay-Per-Use", "impact": 20, "cost": 4, "time": "3 days"}
-        ],
-        "market_unready": [
-            {"name": "Educational Content", "impact": 15, "cost": 2, "time": "1 week"},
-            {"name": "Influencer Partnerships", "impact": 35, "cost": 7, "time": "3 weeks"}
-        ]
-    }
-    
-    primary_fixes = []
-    
-    if not collisions:
-        # Default 'optimization' if no hard collisions
-        primary_fixes.append({
-            "collision_type": "optimization",
-            "blocker_text": "SLOW ORGANIC GROWTH",
-            "severity": 20,
-            "solution": {"name": "Viral Referral Loop", "impact": 25, "cost": 4, "time": "5 days"}
-        })
-    
-    for c in collisions:
-        options = mutation_library.get(c["type"], [])
-        # Simple ranking heuristic: impact - cost
-        best_fix = max(options, key=lambda x: x["impact"] - x["cost"]) if options else None
-        if best_fix:
-            primary_fixes.append({
-                "collision_type": c["type"],
-                "blocker_text": c["description"].upper(),
-                "severity": c["severity"],
-                "solution": best_fix
-            })
-            
-    # Sort fixes by severity to find the "Urgent" one
-    primary_fixes.sort(key=lambda x: x["severity"], reverse=True)
-    
-    return primary_fixes
+# --- STAGE 6: TEMPORAL PROJECTION (INR) ---
 
-# --- STAGE 6: TEMPORAL PROJECTION ---
-
-def run_temporal_projection(seed, p_set, mutations):
-    """
-    Generates growth timeline data.
-    """
-    # Baseline
-    early_adopters = seed["target_user"].get("early_adopter_pool", 1000) # Sim value
-    if early_adopters == 1000: early_adopters = 500 # Default
+def run_temporal_projection_inr(seed, p_set, mutations):
+    # INR Logic: 1 User ~ ₹500 LTV (approx $6)
+    arpu = 500 
+    if p_set["factors"]["capital_availability"] > 80: arpu = 1200 # Premium markets
     
     # Week 1
-    w1_users = 250
-    w1_rev = 0
+    w1_users = 150
+    w1_rev = 0 
     
     # Month 1
-    m1_users = 1200
-    m1_rev = 4500
+    m1_users = 850
+    m1_rev = int(m1_users * arpu * 0.1) # 10% conversion
     
-    # Month 3 (Projected Effect of Fix)
-    # If we have a high impact fix, we boost M3 significantly
-    impact_multiplier = 1.0
-    if mutations:
-        top_fix_impact = mutations[0]["solution"]["impact"]
-        impact_multiplier = 1 + (top_fix_impact / 100.0)
-        
-    m3_users = int(5600 * impact_multiplier)
-    m3_rev = int(25000 * impact_multiplier)
+    # Month 3 (Post Fix)
+    fix_boost = 1.4 # 40% boost default
+    m3_users = int(3500 * fix_boost)
+    m3_rev = int(m3_users * arpu * 0.12) # Better conversion
     
-    return {
-        "week1": {"users": w1_users, "revenue": w1_rev},
-        "month1": {"users": m1_users, "revenue": m1_rev},
-        "month3": {"users": m3_users, "revenue": m3_rev}
-    }
+    # Formatting helper
+    def fmt_curr(amount):
+        if amount >= 100000:
+            return f"{amount/100000:.1f}L"
+        elif amount >= 1000:
+            return f"{amount/1000:.1f}k"
+        return str(amount)
 
-# --- REPORT GENERATION ---
-def generate_report_text(final_state):
-    """
-    Generates a ~400 word detailed report.
-    """
-    seed = final_state["seed"]
-    p_set = final_state["p_set"]
-    fixes = final_state["mutations"]
-    
-    txt = f"SIMULATION REPORT: {seed['domain']} Venture Analysis\n"
-    txt += f"Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n"
-    
-    txt += "1. CORE VIABILITY ASSESSMENT\n"
-    txt += f"The system has analyzed your concept for a {seed['domain']} solution targeting {seed['target_user']['archetype']}s. "
-    txt += f"The calculated Trust Score is {p_set['t_score']}/100, which is {'critical' if p_set['t_score'] < 50 else 'stable'}. "
-    txt += f"Market Size analysis indicates a potential user base of {p_set['m_size_users']:,} users in the initial serviceable market. "
-    txt += f"Competitive intensity is rated at {p_set['c_int']}/10.\n\n"
-    
-    txt += "2. DETECTED FRICTION POINTS (COLLISIONS)\n"
-    if fixes:
-        fix = fixes[0]
-        txt += f"The primary bottleneck identified is {fix['blocker_text']}. "
-        txt += f"This creates a severity score of {fix['severity']}/100 during the customer journey. "
-        txt += "Without intervention, this will significantly cap growth velocity and increase customer acquisition costs.\n\n"
-    else:
-        txt += "No critical failures detected. The path involves standard optimization.\n\n"
-        
-    txt += "3. RECOMMENDED STRATEGIC MUTATIONS\n"
-    if fixes:
-        for i, f in enumerate(fixes[:2]):
-            txt += f"Priority {i+1}: {f['solution']['name']}. "
-            txt += f"Implementation of this feature is estimated to take {f['solution']['time']} and is projected to improve conversion by {f['solution']['impact']}%. "
-            txt += "This addresses the identified friction point directly.\n"
-    
-    txt += "\n4. FINANCIAL & GROWTH PROJECTION\n"
-    proj = final_state["projections"]
-    txt += f"Post-optimization projections suggest reaching {proj['month3']['users']:,} active users by Month 3, "
-    txt += f"generating approximately ${proj['month3']['revenue']:,} in monthly revenue. "
-    txt += "This assumes succesful implementation of the 'Urgent' fixes identified above.\n\n"
-    
-    txt += "5. CONCLUSION\n"
-    txt += "Your idea is investable, provided the trust and friction gaps are bridged immediately. "
-    txt += "Focus on the 'Urgent Action' items in the dashboard to unlock the growth curve."
-    
-    return txt
+    return {
+        "week1_users": f"{w1_users}",
+        "month1_rev": fmt_curr(m1_rev),
+        "month3_rev": fmt_curr(m3_rev)
+    }
 
 # --- MAIN CONTROLLER ---
 
 def analyze_idea(idea_text):
-    # 1. Parsing
     seed = parse_input_and_extract_dna(idea_text)
-    
-    # 2. Model
     model = construct_synthetic_model(seed)
-    
-    # 3. Physics
     p_set = calculate_physics(seed, model)
-    
-    # 4. Collisions
     collisions = detect_collisions(p_set, model, seed)
+    projections = run_temporal_projection_inr(seed, p_set, collisions)
     
-    # 5. Mutations
-    mutations = generate_mutations(collisions)
+    # Calculate Investable Status
+    status = "INVESTABLE"
+    status_text_color = "green" # For text classes
     
-    # 6. Projections
-    projections = run_temporal_projection(seed, p_set, mutations)
-    
-    # Final Structure for Frontend
-    top_fix = mutations[0] if mutations else None
-    next_fix = mutations[1] if len(mutations) > 1 else None
-    
-    # Fallback if no second fix
-    if not next_fix:
-        next_fix = {"solution": {"name": "SEO Optimization", "time": "ongoing", "impact": "MEDIUM"}, "blocker_text": "Visibility"}
+    if p_set["t_score"] < 40 or p_set["c_int"] > 7:
+        status = "HIGH RISK"
+        status_text_color = "red"
+    if p_set["factors"]["market_adoption"] < 30:
+        status = "NEEDS PIVOT"
+        status_text_color = "yellow"
 
-    report_text = generate_report_text({
-        "seed": seed, "p_set": p_set, "mutations": mutations, "projections": projections
-    })
+    # Generate Narrative Summary
+    blocker = collisions[0]
+    summary_text = f"The simulation indicates a {status} result. Key metrics show {p_set['factors']['market_adoption']}% market readiness, but success is contingent on addressing the '{blocker['title']}' blocker."
 
+    # Prepare V2 Data Context
     return {
-        "investable_score": "INVESTABLE" if p_set["t_score"] > 40 and p_set["p_sens"] < 8 else "HIGH RISK",
-        "trust_score": f"{p_set['t_score']}/10", # Scaled to 10 for display? logic says 100, let's normalize
-        "trust_score_display": f"{int(p_set['t_score']/10)}/10",
-        "competition_score": "LOW" if p_set["c_int"] < 5 else "HIGH",
-        "pain_point_score": "HIGH", # Static based on "Idea is investable" prompt requirement or dynamic? Let's make dynamic-ish.
+        "badge_status": status,
+        "badge_color": status_text_color, # 'green', 'red', 'yellow'
+        "summary_text": summary_text,
         
-        # Blocker / Urgent
-        "primary_blocker": top_fix["blocker_text"] if top_fix else "NONE",
-        "blocker_severity": top_fix["severity"] if top_fix else 0, # Used for % abandon maybe?
-        "recommended_fix": top_fix["solution"]["name"] if top_fix else "Scale Marketing",
-        "fix_impact": f"+{top_fix['solution']['impact']}%" if top_fix else "+10%",
-        "fix_time": top_fix["solution"]["time"] if top_fix else "1 week",
+        # Key Metrics
+        "trust_score": p_set["t_score"],
+        "competition_level": "HIGH" if p_set["c_int"] > 6 else "LOW",
+        "pain_severity": "HIGH", 
         
-        # Next Step
-        "urgent_action": top_fix["solution"]["name"] if top_fix else "Launch",
-        "next_step_action": next_fix["solution"]["name"],
-        "next_step_time": next_fix["solution"]["time"],
-        "next_step_impact": "MEDIUM", # simplified
+        # Blocker
+        "blocker_title": blocker["title"],
+        "blocker_desc": blocker["desc"],
+        "blocker_severity": f"{blocker['severity']}/10",
+        
+        # Solution
+        "solution_name": blocker["solution"]["name"],
+        "solution_impact": f"{blocker['solution']['impact']} Impact",
+        "solution_time": blocker["solution"]["time"],
         
         # Projections
-        "week1_users": f"{projections['week1']['users']:,}",
-        "month1_revenue": f"${projections['month1']['revenue']:,}",
-        "month3_revenue": f"${projections['month3']['revenue']:,}",
+        "week1_users": projections["week1_users"],
+        "month1_rev": projections["month1_rev"],
+        "month3_rev": projections["month3_rev"],
         
-        # Environment
-        "market_adoption_potential": p_set["market_adoption_potential"],
-        "regulatory_risk": p_set["regulatory_risk"],
-        "societal_trend": p_set["societal_trend"],
-        "capital_availability": p_set["capital_availability"],
+        # Environment Sliders (0-100)
+        "env_market": p_set["factors"]["market_adoption"],
+        "env_reg": p_set["factors"]["regulatory_risk"],
+        "env_social": p_set["factors"]["societal_trend"],
+        "env_tech": p_set["factors"]["tech_disruption"],
+        "env_supply": p_set["factors"]["supply_chain_risk"],
+        "env_capital": p_set["factors"]["capital_availability"],
         
-        "full_report_text": report_text
+        # Report Text
+        "full_report_text": f"Simulation Report for {seed['domain']}\nResult: {status}\nTrust: {p_set['t_score']}\nBlocker: {blocker['desc']}\nRec: {blocker['solution']['name']}\nProjected Rev: {projections['month3_rev']} INR"
     }
