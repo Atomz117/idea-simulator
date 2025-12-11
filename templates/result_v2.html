@@ -136,53 +136,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full max-w-5xl py-12">
-                            <div class="flex flex-col items-center text-center mb-8">
-                                <h2 class="text-3xl font-bold tracking-tight text-white">Growth Projections (INR)</h2>
-                                <p class="mt-2 max-w-2xl text-gray-400">Timeline shows projected user and revenue growth
-                                    (approx. in Rupees), factoring in the implementation of the recommended solution.
-                                </p>
-                            </div>
-                            <div class="relative flex items-end justify-between w-full h-40 px-4">
-                                <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-700 -translate-y-1/2"></div>
-                                <div class="relative flex flex-col items-center">
-                                    <div
-                                        class="relative flex items-center justify-center size-24 bg-background-dark border-2 border-primary rounded-full">
-                                        <div class="text-center">
-                                            <p class="text-sm font-bold text-primary uppercase">Week 1</p>
-                                            <p
-                                                class="text-2xl font-bold text-white px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">
-                                                {{ week1_users }}</p>
-                                            <p class="text-xs text-gray-400">Users</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative flex flex-col items-center">
-                                    <div
-                                        class="relative flex items-center justify-center size-32 bg-background-dark border-2 border-primary rounded-full">
-                                        <div class="text-center">
-                                            <p class="text-sm font-bold text-primary uppercase">Month 1</p>
-                                            <p
-                                                class="text-3xl font-bold text-white px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">
-                                                ₹{{ month1_rev }}</p>
-                                            <p class="text-xs text-gray-400">Revenue</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative flex flex-col items-center">
-                                    <div
-                                        class="relative flex items-center justify-center size-40 bg-background-dark border-2 border-green-500 rounded-full shadow-glow-green">
-                                        <div class="text-center">
-                                            <p class="text-base font-bold text-green-400 uppercase">Month 3</p>
-                                            <p
-                                                class="text-4xl font-black text-white px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">
-                                                ₹{{ month3_rev }}</p>
-                                            <p class="text-sm text-gray-300">Revenue (post-fix)</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Financial and User Growth Projections removed as requested -->
                         <div class="w-full max-w-6xl py-12">
                             <div class="flex flex-col items-center text-center mb-10">
                                 <h2 class="text-3xl font-bold tracking-tight text-white">Environmental Impact Analysis
@@ -313,7 +267,8 @@
                         <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 max-w-4xl">
                             <div class="flex flex-col p-6 rounded-xl border-2 border-red-500 bg-red-900/20 text-center">
                                 <span class="material-symbols-outlined text-4xl text-red-300 mb-3">priority_high</span>
-                                <h3 class="text-xl font-bold text-red-300 uppercase tracking-wider">Urgent Action</h3>
+                                <h3 class="text-xl font-bold text-red-300 uppercase tracking-wider">Urgent Action (3-5
+                                    Days)</h3>
                                 <p
                                     class="text-2xl font-bold text-white mt-1 px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">
                                     {{ solution_name }}</p>
@@ -329,16 +284,18 @@
                             <div
                                 class="flex flex-col p-6 rounded-xl border-2 border-blue-500 bg-blue-900/20 text-center">
                                 <span class="material-symbols-outlined text-4xl text-blue-300 mb-3">build</span>
-                                <h3 class="text-xl font-bold text-blue-300 uppercase tracking-wider">Next Step</h3>
+                                <h3 class="text-xl font-bold text-blue-300 uppercase tracking-wider">Next Step (Wider
+                                    Picture)</h3>
                                 <p
-                                    class="text-2xl font-bold text-white mt-1 px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">
-                                    Customer Validation</p>
+                                    class="text-xl font-bold text-white mt-1 px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">
+                                    {{ next_step }}</p>
                                 <div class="mt-4 text-sm space-y-1">
-                                    <p><span class="font-semibold text-gray-400">Time Estimate:</span> <span
-                                            class="text-gray-200 px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">3
-                                            Days</span></p>
+                                    <p><span class="font-semibold text-gray-400">Scope:</span> <span
+                                            class="text-gray-200 px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">Strategic
+                                            Validation</span></p>
                                     <p><span class="font-semibold text-gray-400">Projected Impact:</span> <span
-                                            class="font-bold text-yellow-400 px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">Medium</span>
+                                            class="font-bold text-yellow-400 px-2 bg-variable-badge border border-dashed border-variable-border rounded-md text-variable-text">Long
+                                            Term</span>
                                     </p>
                                 </div>
                             </div>
