@@ -6,23 +6,31 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 
 @app.route('/')
 def home():
-    return render_template('new_front.html')
+    return render_template('finder.html')
 
 @app.route('/result', methods=['POST', 'GET'])
 def result():
     if request.method == 'POST':
-        idea = request.form.get('idea', '')
-        if not idea:
-             return render_template('new_front.html') # Redirect back if empty
-             
-        # Run the deterministic simulation
-        simulation_data = analyze_idea(idea)
-        
-        # Render the dynamic template with the data
-        return render_template('result_v2.html', **simulation_data)
+        try:
+            idea = request.form.get('idea', '')
+            industry = request.form.get('industry', '')
+            
+            if not idea:
+                 return render_template('finder.html') # Redirect back if empty
+                 
+            # Run the deterministic simulation with industry context
+            simulation_data = analyze_idea(idea, industry)
+            
+            # Render the dynamic template with the data
+            # Fix: Pass original_idea explicitly so the template can render it
+            return render_template('result_v2.html', original_idea=idea, **simulation_data)
+        except Exception as e:
+            import traceback
+            traceback.print_exc() # This will print to the server logs (Render console)
+            return f"<h2>Simulation Failed</h2><p>Error: {str(e)}</p><pre>{traceback.format_exc()}</pre>", 500
         
     # If accessed via GET (e.g. reload), send back to home
-    return render_template('new_front.html')
+    return render_template('finder.html')
 
 @app.route('/download_report', methods=['POST'])
 def download_report():

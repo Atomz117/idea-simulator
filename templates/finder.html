@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Validator - Finder</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --background-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--background-dark);
+            color: white;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col items-center justify-center p-4">
+
+    <!-- Hero Section -->
+    <div class="text-center mb-10 max-w-2xl">
+        <h1
+            class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            Simulate Your Business Idea
+        </h1>
+        <p class="text-lg text-gray-400">
+            Select an industry or describe your concept to get a detailed feasibility report in 60 seconds.
+        </p>
+    </div>
+
+    <!-- Section A: Industry Quick-Pick -->
+    <div id="industry-section" class="w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <button onclick="selectIndustry('Tech')"
+            class="flex flex-col items-center p-6 rounded-xl bg-gray-800/50 border border-gray-700 hover:border-blue-500 hover:bg-gray-800 transition group">
+            <span
+                class="material-symbols-outlined text-4xl mb-2 text-blue-400 group-hover:scale-110 transition">computer</span>
+            <span class="font-semibold text-gray-200">Tech & SaaS</span>
+        </button>
+        <button onclick="selectIndustry('E-Commerce')"
+            class="flex flex-col items-center p-6 rounded-xl bg-gray-800/50 border border-gray-700 hover:border-purple-500 hover:bg-gray-800 transition group">
+            <span
+                class="material-symbols-outlined text-4xl mb-2 text-purple-400 group-hover:scale-110 transition">shopping_bag</span>
+            <span class="font-semibold text-gray-200">E-Commerce</span>
+        </button>
+        <button onclick="selectIndustry('Health')"
+            class="flex flex-col items-center p-6 rounded-xl bg-gray-800/50 border border-gray-700 hover:border-green-500 hover:bg-gray-800 transition group">
+            <span
+                class="material-symbols-outlined text-4xl mb-2 text-green-400 group-hover:scale-110 transition">medical_services</span>
+            <span class="font-semibold text-gray-200">Health</span>
+        </button>
+        <button onclick="selectIndustry('Food')"
+            class="flex flex-col items-center p-6 rounded-xl bg-gray-800/50 border border-gray-700 hover:border-yellow-500 hover:bg-gray-800 transition group">
+            <span
+                class="material-symbols-outlined text-4xl mb-2 text-yellow-400 group-hover:scale-110 transition">restaurant</span>
+            <span class="font-semibold text-gray-200">Food & Dining</span>
+        </button>
+    </div>
+
+    <!-- Section B: Primary Search & Dynamic Ideas -->
+    <div class="w-full max-w-2xl flex flex-col items-center">
+
+        <!-- Custom Input Form (Primary) -->
+        <form action="/result" method="POST" class="w-full mb-8">
+            <input type="hidden" name="industry" id="input-industry" value="General">
+            <div class="relative">
+                <textarea name="idea" id="custom-idea-input" required
+                    class="w-full h-24 bg-gray-900 border border-gray-700 rounded-xl p-4 pr-32 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition resize-none shadow-xl"
+                    placeholder="Type your own idea here..."></textarea>
+                <button type="submit"
+                    class="absolute bottom-3 right-3 px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg font-bold text-sm hover:from-blue-500 hover:to-blue-400 transition shadow-lg">
+                    Simulate
+                </button>
+            </div>
+        </form>
+
+        <!-- Dynamic Idea Selection (Hidden until industry click) -->
+        <div id="idea-section" class="w-full hidden opacity-0 transition-opacity duration-500">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-px bg-gray-800 flex-1"></div>
+                <span class="text-gray-500 text-sm font-mono uppercase tracking-wider">Quick Start Ideas</span>
+                <div class="h-px bg-gray-800 flex-1"></div>
+            </div>
+            <div id="generated-ideas" class="grid grid-cols-1 gap-3">
+                <!-- Dynamic Buttons injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay"
+        class="fixed inset-0 bg-background-dark/95 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="text-center">
+            <div class="inline-block relative w-20 h-20 mb-4">
+                <div class="absolute top-0 left-0 w-full h-full border-4 border-blue-500/30 rounded-full animate-ping">
+                </div>
+                <div
+                    class="absolute top-0 left-0 w-full h-full border-4 border-blue-500 rounded-full animate-spin border-t-transparent">
+                </div>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2">Simulating Market Physics...</h2>
+            <p class="text-gray-400" id="loading-text">Analyzing business DNA...</p>
+        </div>
+    </div>
+
+    <script>
+        const ideasMap = {
+            "Tech": [
+                "AI-powered customer support chatbot for Indian SMEs",
+                "SaaS platform for managing remote developer payroll",
+                "No-code app builder for local retailers"
+            ],
+            "E-Commerce": [
+                "Direct-to-consumer organic snacks brand",
+                "Hyper-local delivery app for electronic repairs",
+                "Sustainable fashion marketplace for Gen-Z"
+            ],
+            "Health": [
+                "Telemedicine app for rural healthcare access",
+                "Mental wellness tracker for corporate employees",
+                "Personalized nutrition plan based on Indian diets"
+            ],
+            "Food": [
+                "Cloud kitchen network for regional Indian cuisines",
+                "Subscription-based healthy tiffin service",
+                "Inventory management tool for small restaurants"
+            ]
+        };
+
+        function selectIndustry(industry) {
+            // Update UI state
+            const section = document.getElementById('idea-section');
+            section.classList.remove('hidden');
+            setTimeout(() => section.classList.remove('opacity-0'), 50);
+
+            // Set hidden input
+            document.getElementById('input-industry').value = industry;
+
+            // Generate Buttons
+            const container = document.getElementById('generated-ideas');
+            container.innerHTML = '';
+
+            const ideas = ideasMap[industry] || ideasMap["Tech"];
+            ideas.forEach(ideaText => {
+                const btn = document.createElement('button');
+                btn.className = "text-left p-3 rounded-lg bg-gray-800/50 border border-gray-700 hover:border-blue-400 hover:bg-gray-800 transition text-gray-300 text-sm";
+                btn.textContent = ideaText;
+                btn.onclick = () => submitIdea(ideaText, industry);
+                container.appendChild(btn);
+            });
+        }
+
+        function submitIdea(text, industry) {
+            const form = document.querySelector('form');
+            document.getElementById('custom-idea-input').value = text;
+            document.getElementById('input-industry').value = industry;
+            form.submit();
+        }
+
+        // Add loading state listener
+        document.querySelector('form').addEventListener('submit', function () {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+
+            const texts = [
+                "Extracting feature DNA...",
+                "Synthesizing 5 user personas...",
+                "Calculating Indian market physics...",
+                "Identifying critical blockers...",
+                "Projecting 1-year INR revenue..."
+            ];
+
+            let i = 0;
+            setInterval(() => {
+                if (i < texts.length) {
+                    document.getElementById('loading-text').textContent = texts[i];
+                    i++;
+                }
+            }, 800);
+        });
+    </script>
+</body>
+
+</html>
